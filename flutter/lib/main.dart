@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_plugin/location/map.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -33,6 +35,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  String inkwell = '';
   void _incrementCounter() {
     FirebaseAnalytics().logEvent(name: 'Plus_icon_clicked', parameters: null);
 
@@ -83,13 +86,49 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icon(Icons.create),
               onPressed: () {
                 // throw Exception("test a crash");
+              }),
+          IconButton(
+              icon: Icon(Icons.map),
+              onPressed: () {
+                // throw Exception("test a crash");
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MapPage()));
               })
         ],
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            InkWell(
+              onTap: () {
+                setState(() {
+                  inkwell = 'Inkwell Tapped';
+                });
+              },
+              onLongPress: () {
+                setState(() {
+                  inkwell = 'InkWell Long Pressed';
+                });
+              },
+              child: Container(
+                  color: Colors.indigo,
+                  width: 120,
+                  height: 70,
+                  child: Center(
+                      child: Text(
+                    'Inkwell',
+                    textScaleFactor: 2,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ))),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                inkwell,
+                textScaleFactor: 2,
+              ),
+            ),
             Text(
               'You have pushed the button this many times:',
             ),
@@ -102,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 FirebaseAnalytics()
                     .setUserProperty(name: "dog_or_cat", value: "cat_person");
               },
-              child: Text("Show alert Dialog box"),
+              child: Text("Set user property"),
             ),
           ],
         ),
