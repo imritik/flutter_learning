@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plugin/location/map.dart';
+import 'package:flutter_plugin/pickers/number_picker_demo.dart';
 
 void main() {
   runApp(MyApp());
@@ -105,6 +106,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 setState(() {
                   inkwell = 'Inkwell Tapped';
                 });
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => NumberPickerDemo()));
               },
               onLongPress: () {
                 setState(() {
