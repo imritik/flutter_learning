@@ -4,7 +4,6 @@ import 'package:mvvm_architecture/Model/PostModel.dart';
 
 class ApiViewmodel {
   static List<Post> newPostList = [];
-
   static loadData() {
     ApiManager.getData((success, response) =>
         // posts = response

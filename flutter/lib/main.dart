@@ -1,7 +1,6 @@
-import 'dart:ffi';
-
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_plugin/home_screen.dart';
 import 'package:flutter_plugin/location/map.dart';
 import 'package:flutter_plugin/pickers/number_picker_demo.dart';
 
@@ -45,38 +44,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  // showAlertDialog(BuildContext context) {
-  //   AlertDialog alert = AlertDialog(
-  //     title: Text("AlertDialog"),
-  //     actions: [
-  //       FlatButton(
-  //         child: Text("Cat"),
-  //         onPressed: () {
-  //           FirebaseAnalytics()
-  //               .setUserProperty(name: "dog_or_cat", value: "cat_person");
-  //           Navigator.of(context).pop();
-  //         },
-  //       ),
-  //       FlatButton(
-  //         child: Text("Dog"),
-  //         onPressed: () {
-  //           FirebaseAnalytics()
-  //               .setUserProperty(name: "dog_or_cat", value: "dog_person");
-  //           Navigator.of(context).pop();
-  //         },
-  //       )
-  //     ],
-  //   );
-
-  //   // show the dialog
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return alert;
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,6 +82,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 setState(() {
                   inkwell = 'InkWell Long Pressed';
                 });
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()));
               },
               child: Container(
                   color: Colors.indigo,
@@ -141,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {
                 FirebaseAnalytics()
                     .setUserProperty(name: "dog_or_cat", value: "cat_person");

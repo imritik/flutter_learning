@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:mvvm_architecture/Model/PostModel.dart';
 
 class ApiService {
   static const String API_ENDPOINT =
@@ -15,6 +16,15 @@ class ApiService {
       }
     });
   }
+
+  // static Future<List<dynamic>> getFutureData() async {
+  //   final response = await get(API_ENDPOINT);
+  //   if (response.statusCode == 200) {
+  //     return json.decode(response.body);
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   static postData(VoidCallback callBack(bool success)) async {
     // List<Post> postList = [];
