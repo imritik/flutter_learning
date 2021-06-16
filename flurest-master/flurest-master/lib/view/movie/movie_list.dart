@@ -2,6 +2,7 @@ import 'package:flurest/blocs/movie_bloc.dart';
 import 'package:flurest/helpers/helper.dart';
 import 'package:flurest/models/movie_response.dart';
 import 'package:flurest/networking/api_response.dart';
+import 'package:flurest/view/audio_player/songs.dart';
 import 'package:flurest/view/map/map_view.dart';
 import 'package:flurest/view/movie/add_movie.dart';
 import 'package:flurest/view/movie/movie_detail.dart';
@@ -105,6 +106,16 @@ class _MovieScreenState extends State<MovieScreen> {
                   Navigator.pop(context);
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => VideoScreen()));
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.audiotrack),
+                title: Text('Audio Player'),
+                // enabled: false,
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => SongsScreen()));
                 },
               )
             ],

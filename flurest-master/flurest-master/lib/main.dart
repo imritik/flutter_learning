@@ -20,7 +20,7 @@ class SplashScreenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
-      seconds: 8,
+      seconds: 5,
       navigateAfterSeconds: new MovieScreen(
         message: '',
       ),
