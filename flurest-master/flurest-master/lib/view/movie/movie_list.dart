@@ -1,17 +1,23 @@
 import 'package:flurest/blocs/movie_bloc.dart';
+import 'package:flurest/helpers/helper.dart';
 import 'package:flurest/models/movie_response.dart';
 import 'package:flurest/networking/api_response.dart';
-import 'package:flurest/view/add_movie.dart';
-import 'package:flurest/view/movie_detail.dart';
+import 'package:flurest/view/map/map_view.dart';
+import 'package:flurest/view/movie/add_movie.dart';
+import 'package:flurest/view/movie/movie_detail.dart';
+import 'package:flurest/view/video_player/videos.dart';
 import 'package:flutter/material.dart';
 
 class MovieScreen extends StatefulWidget {
+  MovieScreen({this.message});
+  String message;
   @override
   _MovieScreenState createState() => _MovieScreenState();
 }
 
 class _MovieScreenState extends State<MovieScreen> {
   MovieBloc _bloc;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   bool isOn = false;
 
@@ -29,7 +35,15 @@ class _MovieScreenState extends State<MovieScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.message.length != 0) {
+      Future.delayed(Duration.zero, () async {
+        _scaffoldKey.currentState
+            .showSnackBar(SnackBar(content: Text(widget.message)));
+        widget.message = '';
+      });
+    }
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           elevation: 0.0,
           actions: <Widget>[
@@ -78,16 +92,19 @@ class _MovieScreenState extends State<MovieScreen> {
                 leading: Icon(Icons.map),
                 title: Text('Map'),
                 onTap: () {
-                  // Navigator.of(context)
-                  //     .push(MaterialPageRoute(builder: (context) => MapPage()));
+                  Navigator.pop(context);
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => MapPage()));
                 },
               ),
               ListTile(
                 leading: Icon(Icons.video_call),
                 title: Text('Video Player'),
-                enabled: false,
+                // enabled: false,
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => VideoScreen()));
                 },
               )
             ],
@@ -245,70 +262,6 @@ class MovieListView extends StatelessWidget {
               },
             ));
       },
-    );
-  }
-}
-
-class Error extends StatelessWidget {
-  final String errorMessage;
-
-  final Function onRetryPressed;
-
-  const Error({Key key, this.errorMessage, this.onRetryPressed})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            errorMessage,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.red,
-              fontSize: 18,
-            ),
-          ),
-          SizedBox(height: 8),
-          ElevatedButton(
-            child: Text(
-              'Retry',
-              style: TextStyle(),
-            ),
-            onPressed: onRetryPressed,
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class Loading extends StatelessWidget {
-  final String loadingMessage;
-
-  const Loading({Key key, this.loadingMessage}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            loadingMessage,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 24,
-            ),
-          ),
-          SizedBox(height: 24),
-          CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.lightGreen),
-          ),
-        ],
-      ),
     );
   }
 }

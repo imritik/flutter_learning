@@ -1,6 +1,10 @@
+import 'package:flurest/blocs/movie_bloc.dart';
 import 'package:flurest/blocs/movie_detail_bloc.dart';
+import 'package:flurest/helpers/helper.dart';
 import 'package:flurest/models/movie_response.dart';
 import 'package:flurest/networking/api_response.dart';
+import 'package:flurest/view/movie/edit_movie.dart';
+import 'package:flurest/view/movie/movie_list.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
@@ -14,12 +18,13 @@ class MovieDetail extends StatefulWidget {
 
 class _MovieDetailState extends State<MovieDetail> {
   MovieDetailBloc _movieDetailBloc;
-  Movie _currentMovie;
+  MovieBloc _bloc;
 
   @override
   void initState() {
     super.initState();
     _movieDetailBloc = MovieDetailBloc(widget.selectedMovie);
+    _bloc = MovieBloc();
   }
 
   @override
@@ -85,9 +90,41 @@ class _MovieDetailState extends State<MovieDetail> {
       case 0:
         //add navigation here
         print("edit button clicked");
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => EditMovieDetail(widget.selectedMovie)));
         break;
       case 1:
         print("delete clicked");
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // return object of type Dialog
+            return AlertDialog(
+              title: new Text("Confirm"),
+              content: new Text("Do you want to delete ?"),
+              actions: <Widget>[
+                new FlatButton(
+                  child: new Text("No"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                new FlatButton(
+                  child: new Text("Yes"),
+                  onPressed: () async {
+                    await _bloc.deleteMovie(widget.selectedMovie);
+
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => MovieScreen(
+                              message: "Movie Successfully Deleted",
+                            )));
+                  },
+                ),
+              ],
+            );
+          },
+        );
+
         break;
     }
   }
@@ -207,74 +244,6 @@ class ShowMovieDetail extends StatelessWidget {
           ),
         )
       ]),
-    );
-  }
-}
-
-class Error extends StatelessWidget {
-  final String errorMessage;
-
-  final Function onRetryPressed;
-
-  const Error({Key key, this.errorMessage, this.onRetryPressed})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            errorMessage,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.red,
-              fontSize: 18,
-            ),
-          ),
-          SizedBox(height: 8),
-          RaisedButton(
-            color: Colors.redAccent,
-            child: Text(
-              'Retry',
-              style: TextStyle(
-//                color: Colors.white,
-                  ),
-            ),
-            onPressed: onRetryPressed,
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class Loading extends StatelessWidget {
-  final String loadingMessage;
-
-  const Loading({Key key, this.loadingMessage}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            loadingMessage,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-//              color: Colors.lightGreen,
-              fontSize: 24,
-            ),
-          ),
-          SizedBox(height: 24),
-          CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.lightGreen),
-          ),
-        ],
-      ),
     );
   }
 }

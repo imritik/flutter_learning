@@ -1,8 +1,8 @@
+import 'package:flurest/view/video_player/video_items.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_plugin/video_items.dart';
 import 'package:video_player/video_player.dart';
 
-class HomeScreen extends StatelessWidget {
+class VideoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text('Video player'),
-        centerTitle: true,
+        // centerTitle: true,
       ),
       body: ListView(
         children: <Widget>[

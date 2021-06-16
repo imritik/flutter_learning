@@ -30,7 +30,7 @@ class MovieBloc {
 
   MovieBloc() {
     _movieListController = StreamController<ApiResponse<List<Movie>>>();
-    _addMovieController = StreamController<ApiResponse<bool>>();
+    _addMovieController = StreamController<ApiResponse<bool>>.broadcast();
     _movieRepository = MovieRepository();
     fetchMovieList();
   }
@@ -58,6 +58,16 @@ class MovieBloc {
       movieAddSink.add(ApiResponse.error(e.toString()));
       print(e);
     }
+  }
+
+  updateMovie(Movie movie) async {
+    print("in bloc update");
+    await _movieRepository.updateMovie(Constants.ADD_MOVIE_URL, movie);
+  }
+
+  deleteMovie(int id) async {
+    await _movieRepository
+        .deleteMovie(Constants.DELETE_MOVIE_URL + id.toString());
   }
 
   dispose() {

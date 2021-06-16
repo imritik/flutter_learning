@@ -19,4 +19,14 @@ class MovieRepository {
     final response = await _helper.post(url, map);
     return response;
   }
+
+  Future updateMovie(String url, Movie movie) async {
+    print("in update movie");
+    var map = movie.toMap();
+    return await _helper.put(url, map);
+  }
+
+  Future deleteMovie(String url) async {
+    return await _helper.delete(url);
+  }
 }

@@ -1,7 +1,7 @@
 import 'package:flurest/blocs/movie_bloc.dart';
+import 'package:flurest/helpers/helper.dart';
 import 'package:flurest/models/movie_response.dart';
 import 'package:flurest/networking/api_response.dart';
-import 'package:flurest/view/movie_list.dart';
 import 'package:flutter/material.dart';
 
 class AddPostScreen extends StatefulWidget {
