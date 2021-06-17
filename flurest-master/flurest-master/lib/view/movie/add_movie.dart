@@ -28,7 +28,7 @@ class _AddPostState extends State<AddPostScreen> {
 
   _createPost(BuildContext context) async {
     if (!_formKey.currentState.validate()) {
-      _showSnackBar("Failed to add Movie", context);
+      _showSnackBar("Failed to add Contact", context);
       return;
     }
     _formKey.currentState.save();
@@ -44,7 +44,7 @@ class _AddPostState extends State<AddPostScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Add a Movie'),
+        title: Text('Add a Contact'),
       ),
       body: StreamBuilder<ApiResponse<bool>>(
         stream: _bloc.movieAddStream,
@@ -76,12 +76,13 @@ class _AddPostState extends State<AddPostScreen> {
   Widget _addMovieForm(bool value, BuildContext context) {
     if (value) {
       Future.delayed(Duration.zero, () async {
-        _showSnackBar("Movie Successfully Added !", context);
+        _showSnackBar("Contact Successfully Added !", context);
       });
     }
     return Scaffold(
       body: Container(
         child: Form(
+          autovalidateMode: AutovalidateMode.always,
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +110,7 @@ class _AddPostState extends State<AddPostScreen> {
               Padding(
                 padding: EdgeInsets.only(left: 32, right: 32, top: 16),
                 child: TextFormField(
-                  maxLines: 3,
+                  // maxLines: 3,
                   decoration: InputDecoration(
                       labelText: "Description", alignLabelWithHint: true),
                   validator: (value) {

@@ -8,13 +8,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.7.0"
-  audio_manager:
-    dependency: "direct main"
-    description:
-      name: audio_manager
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.8.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -90,13 +83,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_audio_query:
-    dependency: "direct main"
-    description:
-      name: flutter_audio_query
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.4+1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:

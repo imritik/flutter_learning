@@ -37,7 +37,7 @@ class _EditMovieDetailState extends State<EditMovieDetail> {
 
   _updatePost(BuildContext context) async {
     if (!_formKey.currentState.validate()) {
-      _showSnackBar("Failed to edit Movie", context);
+      _showSnackBar("Failed to edit Contact", context);
       return;
     }
     _formKey.currentState.save();
@@ -47,7 +47,7 @@ class _EditMovieDetailState extends State<EditMovieDetail> {
     await _bloc.updateMovie(_post);
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => MovieScreen(
-              message: "Movie Successfully Updated !",
+              message: "Contact Successfully Updated !",
             )));
   }
 
@@ -58,7 +58,7 @@ class _EditMovieDetailState extends State<EditMovieDetail> {
       appBar: AppBar(
         elevation: 0.0,
         title: Text(
-          'Edit Movie',
+          'Edit Contact',
           style: TextStyle(
             fontSize: 20,
           ),
@@ -105,6 +105,7 @@ class _EditMovieDetailState extends State<EditMovieDetail> {
     return Scaffold(
       body: Container(
         child: Form(
+          autovalidateMode: AutovalidateMode.always,
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,7 +134,6 @@ class _EditMovieDetailState extends State<EditMovieDetail> {
               Padding(
                 padding: EdgeInsets.only(left: 32, right: 32, top: 16),
                 child: TextFormField(
-                  maxLines: 5,
                   decoration: InputDecoration(
                       labelText: "Description", alignLabelWithHint: true),
                   initialValue: movie.body,

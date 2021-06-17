@@ -20,17 +20,17 @@ class SplashScreenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
-      seconds: 5,
+      seconds: 3,
       navigateAfterSeconds: new MovieScreen(
         message: '',
       ),
-      backgroundColor: Colors.teal[200],
+      backgroundColor: Colors.blueAccent,
       title: new Text(
         "Flutter Demo App",
         textScaleFactor: 2,
+        style: TextStyle(color: Colors.white),
       ),
-      image: new Image.network(
-          "https://themodestack.com/wp-content/uploads/2018/08/flutter-review.jpeg"),
+      // image: new Image.asset("assets/images/download.png"),
       photoSize: 150.0,
     );
   }

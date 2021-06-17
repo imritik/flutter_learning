@@ -116,7 +116,7 @@ class _MovieDetailState extends State<MovieDetail> {
 
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => MovieScreen(
-                              message: "Movie Successfully Deleted",
+                              message: "Contact Successfully Deleted",
                             )));
                   },
                 ),
@@ -139,16 +139,16 @@ class ShowMovieDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
       body: Stack(fit: StackFit.expand, children: [
-        new Image.network(
-          'https://logo.clearbit.com/baremetrics.com',
-          fit: BoxFit.cover,
-        ),
-        new BackdropFilter(
-          filter: new ui.ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-          child: new Container(
-            color: Colors.black.withOpacity(0.4),
-          ),
-        ),
+        // new Image.network(
+        //   'https://logo.clearbit.com/baremetrics.com',
+        //   fit: BoxFit.cover,
+        // ),
+        // new BackdropFilter(
+        //   filter: new ui.ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+        //   child: new Container(
+        //     color: Colors.black.withOpacity(0.4),
+        //   ),
+        // ),
         new SingleChildScrollView(
           child: new Container(
             margin: const EdgeInsets.all(8.0),
@@ -172,25 +172,28 @@ class ShowMovieDetail extends StatelessWidget {
                     ],
                   ),
                 ),
-                new Container(
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 0.0),
-                  child: new Row(
-                    children: <Widget>[
-                      new Expanded(
-                          child: new Text(
+                SizedBox(
+                  height: 20,
+                ),
+                new Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: new Text(
                         displayMovie.title,
                         style: new TextStyle(
-                            color: Colors.white,
-                            fontSize: 25.0,
+                            color: Colors.black,
+                            fontSize: 35.0,
                             fontFamily: 'Arvo'),
-                      )),
-                    ],
-                  ),
+                      ),
+                    )
+                  ],
                 ),
                 new Text(displayMovie.body,
                     style: new TextStyle(
-                        color: Colors.white, fontSize: 18, fontFamily: 'Arvo')),
+                        color: Colors.black, fontSize: 22, fontFamily: 'Arvo')),
                 new Padding(padding: const EdgeInsets.all(10.0)),
                 new Row(
                   children: <Widget>[
@@ -200,7 +203,7 @@ class ShowMovieDetail extends StatelessWidget {
                       height: 60.0,
                       alignment: Alignment.center,
                       child: new Text(
-                        'Rate Movie',
+                        'Rating',
                         style: new TextStyle(
                             color: Colors.white,
                             fontFamily: 'Arvo',

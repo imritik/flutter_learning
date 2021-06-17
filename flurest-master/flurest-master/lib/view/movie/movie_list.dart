@@ -2,7 +2,7 @@ import 'package:flurest/blocs/movie_bloc.dart';
 import 'package:flurest/helpers/helper.dart';
 import 'package:flurest/models/movie_response.dart';
 import 'package:flurest/networking/api_response.dart';
-import 'package:flurest/view/audio_player/songs.dart';
+
 import 'package:flurest/view/map/map_view.dart';
 import 'package:flurest/view/movie/add_movie.dart';
 import 'package:flurest/view/movie/movie_detail.dart';
@@ -108,16 +108,16 @@ class _MovieScreenState extends State<MovieScreen> {
                       MaterialPageRoute(builder: (context) => VideoScreen()));
                 },
               ),
-              ListTile(
-                leading: Icon(Icons.audiotrack),
-                title: Text('Audio Player'),
-                // enabled: false,
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => SongsScreen()));
-                },
-              )
+              // ListTile(
+              //   leading: Icon(Icons.audiotrack),
+              //   title: Text('Audio Player'),
+              //   // enabled: false,
+              //   onTap: () {
+              //     Navigator.pop(context);
+              //     Navigator.of(context).push(
+              //         MaterialPageRoute(builder: (context) => SongsScreen()));
+              //   },
+              // )
             ],
           ),
         ),
@@ -178,7 +178,7 @@ class MovieList extends StatelessWidget {
       itemCount: movieList.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 1.5 / 1.8,
+        // childAspectRatio: 1.5 / 1.8,
       ),
       itemBuilder: (context, index) {
         return Padding(
@@ -190,16 +190,16 @@ class MovieList extends StatelessWidget {
               },
               child: Card(
                   child: Column(children: [
-                Flexible(
-                  flex: 2,
+                Expanded(
+                  flex: 4,
                   child: Center(
                       child: CircleAvatar(
-                    radius: 25,
+                    radius: 35,
                     backgroundColor: Colors.teal,
                     child: Text(
                       movieList[index].title[0].toUpperCase(),
                       style: TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 25.0,
                       ),
                     ),
                   )),
@@ -207,12 +207,13 @@ class MovieList extends StatelessWidget {
                 Expanded(
                     flex: 3,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text(movieList[index].title),
-                        ),
+                        Text(
+                          movieList[index].title,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        )
                       ],
                     )),
               ])),
@@ -245,6 +246,7 @@ class MovieListView extends StatelessWidget {
                     flex: 1,
                     child: Center(
                         child: CircleAvatar(
+                      radius: 20,
                       backgroundColor: Colors.teal,
                       child: Text(
                         movieList[index].title[0].toUpperCase(),
@@ -254,6 +256,9 @@ class MovieListView extends StatelessWidget {
                       ),
                     )),
                   ),
+                  SizedBox(
+                    width: 20,
+                  ),
                   Flexible(
                       flex: 5,
                       child: Column(
@@ -261,7 +266,9 @@ class MovieListView extends StatelessWidget {
                         children: <Widget>[
                           Padding(
                             padding: const EdgeInsets.all(4.0),
-                            child: Text(movieList[index].title),
+                            child: Text(movieList[index].title,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18)),
                           ),
                         ],
                       )),
