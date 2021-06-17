@@ -36,7 +36,7 @@ class MovieBloc {
   }
 
   fetchMovieList() async {
-    movieListSink.add(ApiResponse.loading('Fetching Movies'));
+    movieListSink.add(ApiResponse.loading('Fetching Contacts'));
     try {
       List<Movie> movies =
           await _movieRepository.fetchMovieList(Constants.BASE_URL);

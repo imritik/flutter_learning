@@ -18,13 +18,13 @@ class VideoScreen extends StatelessWidget {
             videoPlayerController:
                 VideoPlayerController.asset('assets/videos/sample1.mp4'),
             looping: false,
-            autoplay: true,
+            autoplay: false,
           ),
           VideoItems(
             videoPlayerController: VideoPlayerController.asset(
               'assets/videos/sample2.mp4',
             ),
-            autoplay: true,
+            autoplay: false,
           ),
           VideoItems(
             videoPlayerController: VideoPlayerController.network(
