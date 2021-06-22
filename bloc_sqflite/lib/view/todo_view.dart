@@ -1,4 +1,5 @@
 import 'package:bloc_sqflite/blocs/todo_bloc.dart';
+import 'package:bloc_sqflite/helper/helper_widget.dart' as helper;
 import 'package:bloc_sqflite/models/todo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +20,10 @@ class TodoPage extends StatelessWidget {
         statusBarBrightness: Brightness.dark));
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Todo"),
+        centerTitle: true,
+      ),
       body: SafeArea(
         child: Container(
           color: Colors.white,
@@ -94,7 +99,7 @@ class TodoPage extends StatelessWidget {
 
   void _showAddTodoSheet(BuildContext context) {
     final _todoDescriptionController = TextEditingController();
-    showBottomSheet(
+    showModalBottomSheet(
         context: context,
         builder: (builder) {
           return Padding(
@@ -129,17 +134,19 @@ class TodoPage extends StatelessWidget {
                               decoration: const InputDecoration(
                                   hintText: 'I have to...',
                                   labelText: 'New Todo',
+                                  // errorText: _validateInputString(
+                                  //     _todoDescriptionController.value.text),
                                   labelStyle: TextStyle(
                                       color: Colors.indigoAccent,
                                       fontWeight: FontWeight.w500)),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Empty description!';
-                                }
-                                return value.contains('@')
-                                    ? 'Do not use @ char.'
-                                    : null;
-                              },
+                              // validator: (value) {
+                              //   if (value!.isEmpty) {
+                              //     return 'Empty description!';
+                              //   }
+                              //   return value.contains('@')
+                              //       ? 'Do not use @ char.'
+                              //       : null;
+                              // },
                             ),
                           ),
                           Padding(
@@ -155,9 +162,9 @@ class TodoPage extends StatelessWidget {
                                     ),
                                     onPressed: () {
                                       final newTodo = Todo(
-                                          description:
-                                              _todoDescriptionController
-                                                  .value.text);
+                                        description: _todoDescriptionController
+                                            .value.text,
+                                      );
                                       if (newTodo.description.isNotEmpty) {
                                         todoBloc.addTodo(newTodo);
                                         Navigator.pop(context);
@@ -216,11 +223,11 @@ class TodoPage extends StatelessWidget {
                                     color: Colors.indigoAccent,
                                     fontWeight: FontWeight.w500),
                               ),
-                              validator: (value) {
-                                return value!.contains('@')
-                                    ? 'Do not use the @ char.'
-                                    : null;
-                              },
+                              // validator: (value) {
+                              //   return value!.contains('@')
+                              //       ? 'Do not use the @ char.'
+                              //       : null;
+                              // },
                             ),
                           ),
                           Padding(
@@ -261,12 +268,14 @@ class TodoPage extends StatelessWidget {
   }
 
   Widget getTodosWidget() {
-    return StreamBuilder(
-      stream: todoBloc.todos,
-      builder: (BuildContext context, AsyncSnapshot<List<Todo>> snapshot) {
-        return getTodoCardWidget(snapshot);
-      },
-    );
+    return RefreshIndicator(
+        onRefresh: () => todoBloc.getTodos(),
+        child: StreamBuilder(
+          stream: todoBloc.todos,
+          builder: (BuildContext context, AsyncSnapshot<List<Todo>> snapshot) {
+            return getTodoCardWidget(snapshot);
+          },
+        ));
   }
 
   Widget getTodoCardWidget(AsyncSnapshot<List<Todo>> snapshot) {
@@ -335,6 +344,17 @@ class TodoPage extends StatelessWidget {
                                 ? TextDecoration.lineThrough
                                 : TextDecoration.none),
                       ),
+                      trailing: IconButton(
+                          enableFeedback: true,
+                          onPressed: () {
+                            if (todo.isDone) {
+                              helper.showSnackBar(
+                                  "Can't edit this item", context);
+                            } else {
+                              _showEditDialog(todo, context);
+                            }
+                          },
+                          icon: const Icon(Icons.edit)),
                     ),
                   ),
                 );
@@ -343,47 +363,51 @@ class TodoPage extends StatelessWidget {
           // ignore: avoid_unnecessary_containers
           : Container(
               child: Center(
-                child: noTodoMessageWidget(),
+                child: helper.noTodoMessageWidget(),
               ),
             );
     } else {
       return Center(
-        child: loadingData(),
+        child: helper.loadingData(),
       );
     }
   }
 
-  Widget loadingData() {
-    todoBloc.getTodos();
-    // ignore: avoid_unnecessary_containers
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        // ignore: prefer_const_literals_to_create_immutables
-        children: <Widget>[
-          // ignore: prefer_const_constructors
-          CircularProgressIndicator(),
-          const SizedBox(
-            height: 10,
-          ),
-          // ignore: prefer_const_constructors
-          Text(
-            "Loading ...",
-            style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget noTodoMessageWidget() {
-    // ignore: avoid_unnecessary_containers
-    return Container(
-      child: const Text(
-        "Start adding Todo...",
-        style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500),
-      ),
-    );
+  _showEditDialog(Todo todo, BuildContext context) {
+    String description = '';
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Edit your todo"),
+            content: TextFormField(
+              onChanged: (value) {
+                description = value;
+              },
+              maxLines: 2,
+              initialValue: todo.description,
+            ),
+            actions: <Widget>[
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Cancel")),
+              ElevatedButton(
+                  onPressed: () async {
+                    if (description.isNotEmpty) {
+                      todo.description = description;
+                      await todoBloc.updateTodo(todo);
+                      Navigator.pop(context);
+                      helper.showSnackBar("Successfully updated!", context);
+                    } else {
+                      // return "Empty Description";
+                    }
+                  },
+                  child: const Text("Update"))
+            ],
+          );
+        });
   }
 
   dispose() {

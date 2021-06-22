@@ -2,7 +2,7 @@ class Todo {
   int id;
   String description;
   bool isDone = false;
-  Todo({this.id = 0, required this.description, this.isDone = false});
+  Todo({required this.description, this.isDone = false, this.id = 0});
 
   factory Todo.fromDatabaseJson(Map<String, dynamic> data) => Todo(
         //This will be used to convert JSON objects into a Todo object
@@ -14,7 +14,7 @@ class Todo {
         isDone: data['is_done'] == 0 ? false : true,
       );
   Map<String, dynamic> toDatabaseJson() => {
-        "id": id,
+        // "id": id,
         "description": description,
         "is_done": isDone == false ? 0 : 1,
       };

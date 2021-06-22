@@ -2,13 +2,15 @@ import 'dart:async';
 
 import 'package:bloc_sqflite/database/database.dart';
 import 'package:bloc_sqflite/models/todo.dart';
+import 'package:sqflite/sqflite.dart';
 
 class TodoDao {
   final dbProvider = DatabaseProvider.dbProvider;
 
   Future<int> createTodo(Todo todo) async {
     final db = await dbProvider.database;
-    var result = db!.insert(todoTable, todo.toDatabaseJson());
+    var result = db!.insert(todoTable, todo.toDatabaseJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
     return result;
   }
 
