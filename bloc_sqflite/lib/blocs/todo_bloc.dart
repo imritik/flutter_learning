@@ -1,23 +1,17 @@
 import 'dart:async';
-
 import 'package:bloc_sqflite/models/todo.dart';
 import 'package:bloc_sqflite/repository/todo_repository.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class TodoBloc extends Bloc {
+class TodoBloc {
   final _todoRepository = TodoRepository();
 
   final _todoController = StreamController<List<Todo>>.broadcast();
 
   get todos => _todoController.stream;
 
-  TodoBloc() : super(null) {
+  TodoBloc() {
     getTodos();
   }
-
-  // List<Todo> getTodoList(String? query) {
-  //   return _todoRepository.getAllTodos(query: query);
-  // }
 
   getTodos({String? query}) async {
     _todoController.sink.add(await _todoRepository.getAllTodos(query: query));
@@ -40,10 +34,5 @@ class TodoBloc extends Bloc {
 
   dispose() {
     _todoController.close();
-  }
-
-  @override
-  Stream mapEventToState(event) {
-    throw UnimplementedError();
   }
 }

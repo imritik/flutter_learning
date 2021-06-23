@@ -16,7 +16,6 @@ class TodoPage extends StatefulWidget {
 
 class _TodoPageState extends State<TodoPage> {
   final TodoBloc todoBloc = TodoBloc();
-  final DismissDirection _dismissDirection = DismissDirection.horizontal;
   List<Todo> todoList = [];
 
   @override
@@ -284,7 +283,8 @@ class _TodoPageState extends State<TodoPage> {
               return snapshot.data!.isNotEmpty
                   ? TodoListScreen(
                       todoList: snapshot.data!,
-                      // todoBloc: todoBloc,
+                      deleteById: todoBloc.deleteTodoById,
+                      updateTodo: todoBloc.updateTodo,
                     )
                   // ignore: avoid_unnecessary_containers
                   : Container(

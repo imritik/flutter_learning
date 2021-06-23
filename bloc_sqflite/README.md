@@ -24,6 +24,8 @@ This project is a starting point for a Flutter application.
 
 9-SearchDelegate
 
+10-Block Provider
+
 
 
 A few resources to get you started if this is your first Flutter project:

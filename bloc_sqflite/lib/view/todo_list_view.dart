@@ -1,20 +1,23 @@
-import 'package:bloc_sqflite/blocs/bloc_provider.dart';
 import 'package:bloc_sqflite/models/todo.dart';
 import 'package:flutter/material.dart';
 import 'package:bloc_sqflite/helper/helper_widget.dart' as helper;
 
 class TodoListScreen extends StatelessWidget {
   final DismissDirection _dismissDirection = DismissDirection.horizontal;
-  // TodoBloc todoBloc;
-  // Function updateFunc;
-  List<Todo> todoList = [];
 
-  TodoListScreen({Key? key, required this.todoList}) : super(key: key);
+  final List<Todo> todoList;
+  Function deleteById;
+  Function updateTodo;
+
+  TodoListScreen(
+      {Key? key,
+      required this.todoList,
+      required this.deleteById,
+      required this.updateTodo})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var todoBloc = BlocProvider.of(context)!.todoBloc;
-
     return ListView.builder(
         itemCount: todoList.length,
         itemBuilder: (context, itemPosition) {
@@ -34,7 +37,7 @@ class TodoListScreen extends StatelessWidget {
               color: Colors.redAccent,
             ),
             onDismissed: (direction) {
-              todoBloc.deleteTodoById(todo.id);
+              deleteById(todo.id);
             },
             direction: _dismissDirection,
             key: ObjectKey(todo),
@@ -48,7 +51,7 @@ class TodoListScreen extends StatelessWidget {
                 leading: InkWell(
                   onTap: () {
                     todo.isDone = !todo.isDone;
-                    todoBloc.updateTodo(todo);
+                    updateTodo(todo);
                   },
                   // ignore: avoid_unnecessary_containers
                   child: Container(
@@ -97,7 +100,6 @@ class TodoListScreen extends StatelessWidget {
 
   _showEditDialog(Todo todo, BuildContext context) {
     String description = todo.description;
-    var todoBloc = BlocProvider.of(context)!.todoBloc;
 
     return showDialog(
         context: context,
@@ -121,7 +123,7 @@ class TodoListScreen extends StatelessWidget {
                   onPressed: () async {
                     if (description.isNotEmpty) {
                       todo.description = description;
-                      await todoBloc.updateTodo(todo);
+                      await updateTodo(todo);
                       Navigator.pop(context);
                       helper.showSnackBar("Successfully updated!", context);
                     } else {}
