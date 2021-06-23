@@ -1,28 +1,43 @@
 import 'package:bloc_sqflite/blocs/todo_bloc.dart';
 import 'package:bloc_sqflite/helper/helper_widget.dart' as helper;
 import 'package:bloc_sqflite/models/todo.dart';
+import 'package:bloc_sqflite/view/serach_delegate.dart';
+import 'package:bloc_sqflite/view/todo_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class TodoPage extends StatelessWidget {
-  TodoPage({Key? key, required this.title}) : super(key: key);
-  final TodoBloc todoBloc = TodoBloc();
+class TodoPage extends StatefulWidget {
+  const TodoPage({Key? key, required this.title}) : super(key: key);
   final String title;
 
+  @override
+  _TodoPageState createState() => _TodoPageState();
+}
+
+class _TodoPageState extends State<TodoPage> {
+  final TodoBloc todoBloc = TodoBloc();
   final DismissDirection _dismissDirection = DismissDirection.horizontal;
+  List<Todo> todoList = [];
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
-        statusBarColor: Colors.white,
-        systemNavigationBarColor: Colors.white,
-        systemNavigationBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.dark));
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark.copyWith(
+    //     statusBarColor: Colors.white,
+    //     systemNavigationBarColor: Colors.white,
+    //     systemNavigationBarIconBrightness: Brightness.dark,
+    //     statusBarBrightness: Brightness.dark));
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Todo"),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+              onPressed: () {
+                showSearch(context: context, delegate: Search(todoList));
+              },
+              icon: const Icon(Icons.search))
+        ],
       ),
       body: SafeArea(
         child: Container(
@@ -134,19 +149,9 @@ class TodoPage extends StatelessWidget {
                               decoration: const InputDecoration(
                                   hintText: 'I have to...',
                                   labelText: 'New Todo',
-                                  // errorText: _validateInputString(
-                                  //     _todoDescriptionController.value.text),
                                   labelStyle: TextStyle(
                                       color: Colors.indigoAccent,
                                       fontWeight: FontWeight.w500)),
-                              // validator: (value) {
-                              //   if (value!.isEmpty) {
-                              //     return 'Empty description!';
-                              //   }
-                              //   return value.contains('@')
-                              //       ? 'Do not use @ char.'
-                              //       : null;
-                              // },
                             ),
                           ),
                           Padding(
@@ -161,14 +166,18 @@ class TodoPage extends StatelessWidget {
                                       color: Colors.white,
                                     ),
                                     onPressed: () {
-                                      final newTodo = Todo(
-                                        description: _todoDescriptionController
-                                            .value.text,
-                                      );
-                                      if (newTodo.description.isNotEmpty) {
-                                        todoBloc.addTodo(newTodo);
-                                        Navigator.pop(context);
-                                      }
+                                      if (_todoDescriptionController
+                                          .value.text.isNotEmpty) {
+                                        final newTodo = Todo(
+                                          description:
+                                              _todoDescriptionController
+                                                  .value.text,
+                                        );
+                                        if (newTodo.description.isNotEmpty) {
+                                          todoBloc.addTodo(newTodo);
+                                          Navigator.pop(context);
+                                        }
+                                      } else {}
                                     })),
                           ),
                         ],
@@ -223,11 +232,6 @@ class TodoPage extends StatelessWidget {
                                     color: Colors.indigoAccent,
                                     fontWeight: FontWeight.w500),
                               ),
-                              // validator: (value) {
-                              //   return value!.contains('@')
-                              //       ? 'Do not use the @ char.'
-                              //       : null;
-                              // },
                             ),
                           ),
                           Padding(
@@ -242,14 +246,16 @@ class TodoPage extends StatelessWidget {
                                   color: Colors.white,
                                 ),
                                 onPressed: () {
-                                  /*This will get all todos
-                                  that contains similar string
-                                  in the textform
-                                  */
-                                  todoBloc.getTodos(
-                                      query:
-                                          _todoSearchDescriptionFormController
-                                              .value.text);
+                                  if (_todoSearchDescriptionFormController
+                                      .value.text.isNotEmpty) {
+                                    todoBloc.getTodos(
+                                        query:
+                                            _todoSearchDescriptionFormController
+                                                .value.text);
+                                  } else {
+                                    todoBloc.getTodos();
+                                  }
+
                                   //dismisses the bottomsheet
                                   Navigator.pop(context);
                                 },
@@ -273,144 +279,31 @@ class TodoPage extends StatelessWidget {
         child: StreamBuilder(
           stream: todoBloc.todos,
           builder: (BuildContext context, AsyncSnapshot<List<Todo>> snapshot) {
-            return getTodoCardWidget(snapshot);
+            if (snapshot.hasData) {
+              todoList = snapshot.data!;
+              return snapshot.data!.isNotEmpty
+                  ? TodoListScreen(
+                      todoList: snapshot.data!,
+                      // todoBloc: todoBloc,
+                    )
+                  // ignore: avoid_unnecessary_containers
+                  : Container(
+                      child: Center(
+                        child: helper.noTodoMessageWidget(),
+                      ),
+                    );
+            } else {
+              return Center(
+                child: helper.loadingData(),
+              );
+            }
           },
         ));
   }
 
-  Widget getTodoCardWidget(AsyncSnapshot<List<Todo>> snapshot) {
-    if (snapshot.hasData) {
-      return snapshot.data!.isNotEmpty
-          ? ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, itemPosition) {
-                Todo todo = snapshot.data![itemPosition];
-                final Widget dismissibleCard = Dismissible(
-                  background: Container(
-                    child: const Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Deleting",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                    color: Colors.redAccent,
-                  ),
-                  onDismissed: (direction) {
-                    todoBloc.deleteTodoById(todo.id);
-                  },
-                  direction: _dismissDirection,
-                  key: ObjectKey(todo),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      side: const BorderSide(color: Colors.grey, width: 0.5),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    color: Colors.white,
-                    child: ListTile(
-                      leading: InkWell(
-                        onTap: () {
-                          todo.isDone = !todo.isDone;
-                          todoBloc.updateTodo(todo);
-                        },
-                        // ignore: avoid_unnecessary_containers
-                        child: Container(
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: todo.isDone
-                                ? const Icon(
-                                    Icons.done,
-                                    size: 26,
-                                    color: Colors.indigoAccent,
-                                  )
-                                : const Icon(
-                                    Icons.check_box_outline_blank,
-                                    size: 26,
-                                    color: Colors.tealAccent,
-                                  ),
-                          ),
-                        ),
-                      ),
-                      title: Text(
-                        todo.description,
-                        style: TextStyle(
-                            fontSize: 16.5,
-                            fontFamily: 'RobotoMono',
-                            fontWeight: FontWeight.w500,
-                            decoration: todo.isDone
-                                ? TextDecoration.lineThrough
-                                : TextDecoration.none),
-                      ),
-                      trailing: IconButton(
-                          enableFeedback: true,
-                          onPressed: () {
-                            if (todo.isDone) {
-                              helper.showSnackBar(
-                                  "Can't edit this item", context);
-                            } else {
-                              _showEditDialog(todo, context);
-                            }
-                          },
-                          icon: const Icon(Icons.edit)),
-                    ),
-                  ),
-                );
-                return dismissibleCard;
-              })
-          // ignore: avoid_unnecessary_containers
-          : Container(
-              child: Center(
-                child: helper.noTodoMessageWidget(),
-              ),
-            );
-    } else {
-      return Center(
-        child: helper.loadingData(),
-      );
-    }
-  }
-
-  _showEditDialog(Todo todo, BuildContext context) {
-    String description = '';
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text("Edit your todo"),
-            content: TextFormField(
-              onChanged: (value) {
-                description = value;
-              },
-              maxLines: 2,
-              initialValue: todo.description,
-            ),
-            actions: <Widget>[
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Cancel")),
-              ElevatedButton(
-                  onPressed: () async {
-                    if (description.isNotEmpty) {
-                      todo.description = description;
-                      await todoBloc.updateTodo(todo);
-                      Navigator.pop(context);
-                      helper.showSnackBar("Successfully updated!", context);
-                    } else {
-                      // return "Empty Description";
-                    }
-                  },
-                  child: const Text("Update"))
-            ],
-          );
-        });
-  }
-
+  @override
   dispose() {
     todoBloc.dispose();
+    super.dispose();
   }
 }

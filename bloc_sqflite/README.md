@@ -6,14 +6,25 @@ A new Flutter project.
 
 This project is a starting point for a Flutter application.
 
-1-Refresh indicator
+1-Refresh indicator 
+
 2-Stream builders
+
 3-bloc structure
+
 4-sqflite (CRUD)
+
 5-Bottom navigation
+
 6-Swipe gestures
+
 7-Alert dialog
+
 8-BottomSheetModal
+
+9-SearchDelegate
+
+
 
 A few resources to get you started if this is your first Flutter project:
 
