@@ -1,5 +1,3 @@
-import 'package:bloc_sqflite/blocs/bloc_provider.dart';
-import 'package:bloc_sqflite/blocs/todo_bloc.dart';
 import 'package:bloc_sqflite/view/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -14,14 +12,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Sqflite demo',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.indigo,
-        ),
-        home: BlocProvider(
-          todoBloc: TodoBloc(),
-          child: const TodoPage(title: 'My Todo List'),
-        ));
+      title: 'Flutter Sqflite demo',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+      ),
+      home: const TodoPage(title: 'My Todo List'),
+    );
   }
 }

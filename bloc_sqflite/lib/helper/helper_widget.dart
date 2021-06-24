@@ -11,7 +11,6 @@ Widget noTodoMessageWidget() {
 }
 
 Widget loadingData() {
-  // todoBloc.getTodos();
   // ignore: avoid_unnecessary_containers
   return Container(
     child: Column(
