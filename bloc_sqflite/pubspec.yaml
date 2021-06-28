@@ -33,6 +33,10 @@ dependencies:
   path_provider: ^2.0.2
   gallery_saver: ^2.1.0
   image_picker: ^0.8.0+4
+  url_launcher: 
+  share:
+  multi_image_picker: ^4.8.1
+  flutter_absolute_path: ^1.0.6
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -62,9 +66,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

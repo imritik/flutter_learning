@@ -26,6 +26,12 @@ This project is a starting point for a Flutter application.
 
 10-gallery_saver / camera intent
 
+11-set picked image as background image
+
+12-Local push motification
+
+13-open url /email /dialer /gallery /share files
+
 
 
 

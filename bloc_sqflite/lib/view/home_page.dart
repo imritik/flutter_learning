@@ -18,6 +18,8 @@ class TodoPage extends StatefulWidget {
 class _TodoPageState extends State<TodoPage> {
   final TodoBloc todoBloc = TodoBloc();
   List<Todo> todoList = [];
+  // ignore: prefer_typing_uninitialized_variables
+  var backgroundImg;
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +32,101 @@ class _TodoPageState extends State<TodoPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Todo"),
-        centerTitle: true,
+        // centerTitle: true,
         actions: <Widget>[
           IconButton(
               onPressed: () {
                 showSearch(context: context, delegate: Search(todoList));
               },
-              icon: const Icon(Icons.search))
+              icon: const Icon(Icons.search)),
+          const SizedBox(
+            width: 10,
+          ),
+          Padding(
+              padding: const EdgeInsets.only(right: 5, top: 5, bottom: 5),
+              child: CircleAvatar(
+                // ignore: unnecessary_null_comparison
+                child: ClipOval(
+                  child: (backgroundImg != null)
+                      ? Image.file(
+                          backgroundImg,
+                          fit: BoxFit.cover,
+                          width: 60,
+                          height: 60,
+                        )
+                      : Image.asset(
+                          'assets/images/avatar.png',
+                          fit: BoxFit.cover,
+                          width: 100,
+                          height: 100,
+                        ),
+                ),
+              )),
+          PopupMenuButton<int>(
+            itemBuilder: (context) => [
+              PopupMenuItem<int>(
+                  value: 0,
+                  child: Row(
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: <Widget>[
+                      const Icon(
+                        Icons.open_in_browser,
+                        color: Colors.indigo,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      const Text("Open Web url")
+                    ],
+                  )),
+              PopupMenuItem<int>(
+                  value: 1,
+                  child: Row(
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: <Widget>[
+                      const Icon(
+                        Icons.email_outlined,
+                        color: Colors.indigo,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      const Text("Open email ")
+                    ],
+                  )),
+              PopupMenuItem<int>(
+                  value: 2,
+                  child: Row(
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: <Widget>[
+                      const Icon(
+                        Icons.call_made_outlined,
+                        color: Colors.indigo,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      const Text("Open dialer")
+                    ],
+                  )),
+              PopupMenuItem<int>(
+                  value: 3,
+                  child: Row(
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: <Widget>[
+                      const Icon(
+                        Icons.attach_file_outlined,
+                        color: Colors.indigo,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      const Text("Share images")
+                    ],
+                  )),
+            ],
+            onSelected: (item) => helper.selectedItem(context, item),
+          )
         ],
       ),
       body: SafeArea(
@@ -122,21 +212,33 @@ class _TodoPageState extends State<TodoPage> {
                 children: <Widget>[
                   GestureDetector(
                       child: const Text('Take a picture'),
-                      onTap: camera_helper.openCamera),
+                      onTap: () {
+                        camera_helper.openCamera();
+                        Navigator.pop(context);
+                      }),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                   ),
                   GestureDetector(
-                    child: const Text('Record video'),
-                    onTap: camera_helper.recordVideo,
-                  ),
+                      child: const Text('Record video'),
+                      onTap: () {
+                        camera_helper.recordVideo();
+                        Navigator.pop(context);
+                      }),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                   ),
                   GestureDetector(
-                    child: const Text('Select image from gallery'),
-                    onTap: camera_helper.openGallery,
-                  ),
+                      child: const Text('Select image from gallery'),
+                      onTap: () async {
+                        final imageFile = await camera_helper.openGallery();
+                        setState(() {
+                          backgroundImg = imageFile;
+                        });
+                        Navigator.pop(context);
+                        helper.showSnackBar(
+                            "Image successfully updated!", context);
+                      }),
                 ],
               ),
             ),

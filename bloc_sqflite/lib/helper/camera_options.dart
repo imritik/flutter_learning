@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -20,6 +22,10 @@ recordVideo() async {
   });
 }
 
-openGallery() async {
-  ImagePicker().getImage(source: ImageSource.gallery);
+Future<File> openGallery() async {
+  final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+  if (pickedFile == null) {
+    return File("");
+  }
+  return File(pickedFile.path);
 }
