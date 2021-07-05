@@ -32,6 +32,8 @@ This project is a starting point for a Flutter application.
 
 13-open url /email /dialer /gallery /share files /multiImage picker
 
+14-SharedPreferences (Image upload)
+
 
 
 

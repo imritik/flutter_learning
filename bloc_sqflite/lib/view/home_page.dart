@@ -2,6 +2,7 @@ import 'package:bloc_sqflite/blocs/todo_bloc.dart';
 import 'package:bloc_sqflite/helper/camera_options.dart' as camera_helper;
 import 'package:bloc_sqflite/helper/helper_widget.dart' as helper;
 import 'package:bloc_sqflite/models/todo.dart';
+import 'package:bloc_sqflite/services/shared_preferences_service.dart';
 import 'package:bloc_sqflite/view/serach_delegate.dart';
 import 'package:bloc_sqflite/view/todo_list_view.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,13 @@ class _TodoPageState extends State<TodoPage> {
   List<Todo> todoList = [];
   // ignore: prefer_typing_uninitialized_variables
   var backgroundImg;
+  Image? imageFromPreferences;
+
+  @override
+  void initState() {
+    super.initState();
+    loadImageFromSharedPreferences();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +55,14 @@ class _TodoPageState extends State<TodoPage> {
               child: CircleAvatar(
                 // ignore: unnecessary_null_comparison
                 child: ClipOval(
-                  child: (backgroundImg != null)
-                      ? Image.file(
-                          backgroundImg,
-                          fit: BoxFit.cover,
-                          width: 60,
-                          height: 60,
-                        )
+                  child: (imageFromPreferences != null)
+                      ? imageFromPreferences
+                      // Image.(
+                      //     imageFromPreferences,
+                      //     fit: BoxFit.cover,
+                      //     width: 60,
+                      //     height: 60,
+                      //   )
                       : Image.asset(
                           'assets/images/avatar.png',
                           fit: BoxFit.cover,
@@ -122,6 +131,21 @@ class _TodoPageState extends State<TodoPage> {
                         width: 5,
                       ),
                       const Text("Share images")
+                    ],
+                  )),
+              PopupMenuItem<int>(
+                  value: 4,
+                  child: Row(
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: <Widget>[
+                      const Icon(
+                        Icons.notification_add_outlined,
+                        color: Colors.indigo,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      const Text("Notification demo")
                     ],
                   )),
             ],
@@ -202,6 +226,19 @@ class _TodoPageState extends State<TodoPage> {
     );
   }
 
+  void loadImageFromSharedPreferences() {
+    //loading prefs data
+    SharedPreferencesService.getImageFromPreferences().then((img) {
+      if (img == null) {
+        return;
+      }
+      setState(() {
+        imageFromPreferences =
+            SharedPreferencesService.imageFromBase64String(img);
+      });
+    });
+  }
+
   Future<void> _optionsDialogBox() {
     return showDialog(
         context: context,
@@ -232,9 +269,14 @@ class _TodoPageState extends State<TodoPage> {
                       child: const Text('Select image from gallery'),
                       onTap: () async {
                         final imageFile = await camera_helper.openGallery();
-                        setState(() {
-                          backgroundImg = imageFile;
-                        });
+
+                        ///saving to prefs
+                        SharedPreferencesService.saveImageToPreferences(
+                            SharedPreferencesService.base64String(
+                                imageFile.readAsBytesSync()));
+
+                        loadImageFromSharedPreferences();
+
                         Navigator.pop(context);
                         helper.showSnackBar(
                             "Image successfully updated!", context);

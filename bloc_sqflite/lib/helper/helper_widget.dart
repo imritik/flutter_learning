@@ -1,3 +1,4 @@
+import 'package:bloc_sqflite/view/notification/notification_demo.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:url_launcher/url_launcher.dart';
@@ -73,6 +74,11 @@ void selectedItem(BuildContext context, int item) async {
     case 3:
       //share files
       shareFiles();
+      break;
+    case 4:
+      //navigate to notification demo screen
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => NotificationDemo()));
       break;
   }
 }
