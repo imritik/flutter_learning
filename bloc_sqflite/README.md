@@ -28,9 +28,9 @@ This project is a starting point for a Flutter application.
 
 11-set picked image as background image
 
-12-Local push motification
+12-Local push motification 
 
-13-open url /email /dialer /gallery /share files
+13-open url /email /dialer /gallery /share files /multiImage picker
 
 
 

@@ -1,8 +1,11 @@
 // @dart=2.9
-import 'package:bloc_sqflite/view/home_page.dart';
+import 'package:bloc_sqflite/services/notification_service.dart';
+import 'package:bloc_sqflite/view/notification/notification_demo.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService().init();
   runApp(const MyApp());
 }
 
@@ -18,7 +21,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
-      home: const TodoPage(title: 'My Todo List'),
+      // home: const TodoPage(title: 'My Todo List'),
+      home: NotificationDemo(),
     );
   }
 }
