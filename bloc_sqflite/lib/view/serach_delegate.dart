@@ -3,7 +3,7 @@ import 'package:bloc_sqflite/models/todo.dart';
 import 'package:flutter/material.dart';
 
 class Search extends SearchDelegate {
-  Todo selectedResult = Todo(description: '');
+  Todo selectedResult = Todo(description: '', pickedDate: '');
 
   final List<Todo> todos;
   Search(this.todos);

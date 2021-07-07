@@ -104,7 +104,10 @@ class NotificationService {
   void showNotification() async {
     var android = const AndroidNotificationDetails(
         'channelId', 'channelName', 'channelDescription',
-        priority: Priority.high, importance: Importance.max);
+        priority: Priority.high,
+        importance: Importance.max,
+        playSound: true,
+        sound: RawResourceAndroidNotificationSound('tone'));
 
     var iOS = const IOSNotificationDetails();
 

@@ -33,7 +33,8 @@ class DatabaseProvider {
     await database.execute("CREATE TABLE $todoTable ("
         "id INTEGER PRIMARY KEY AUTOINCREMENT , "
         "description TEXT, "
-        "is_done INTEGER "
+        "is_done INTEGER, "
+        "pickedDate TEXT "
         ")");
   }
 }

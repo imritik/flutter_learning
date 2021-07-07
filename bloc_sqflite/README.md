@@ -22,7 +22,7 @@ This project is a starting point for a Flutter application.
 
 8-BottomSheetModal
 
-9-SearchDelegate
+9-SearchDelegate + FilterList acc to date
 
 10-gallery_saver / camera intent
 
@@ -30,7 +30,7 @@ This project is a starting point for a Flutter application.
 
 12-Local push motification 
 
-13-open url /email /dialer /gallery /share files /multiImage picker
+13-open url /email /dialer /gallery /share files /multiImage picker/ DatePicker
 
 14-SharedPreferences (Image upload)
 

@@ -33,6 +33,28 @@ class TodoDao {
     return todos;
   }
 
+  //get todo of current date
+
+  Future<List<Todo>> getTodayTodos(
+      {List<String>? columns, String? query}) async {
+    final db = await dbProvider.database;
+    List<Map<String, dynamic>> result = [];
+    if (query != null) {
+      if (query.isNotEmpty) {
+        result = await db!.query(todoTable,
+            columns: columns,
+            where: 'pickedDate LIKE ?',
+            whereArgs: ["%$query%"]);
+      }
+    } else {
+      result = await db!.query(todoTable, columns: columns);
+    }
+    List<Todo> todos = result.isNotEmpty
+        ? result.map((item) => Todo.fromDatabaseJson(item)).toList()
+        : [];
+    return todos;
+  }
+
   Future<int> updateTodo(Todo todo) async {
     final db = await dbProvider.database;
 

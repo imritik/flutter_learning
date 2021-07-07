@@ -3,7 +3,7 @@ import 'package:bloc_sqflite/services/notification_service.dart';
 
 // ignore: use_key_in_widget_constructors
 class NotificationDemo extends StatelessWidget {
-  NotificationService _notificationService = NotificationService();
+  final NotificationService _notificationService = NotificationService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

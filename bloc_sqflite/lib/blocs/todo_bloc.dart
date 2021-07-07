@@ -17,6 +17,10 @@ class TodoBloc {
     _todoController.sink.add(await _todoRepository.getAllTodos(query: query));
   }
 
+  getTodayTodos({String? query}) async {
+    _todoController.sink.add(await _todoRepository.getTodayTodos(query: query));
+  }
+
   addTodo(Todo todo) async {
     await _todoRepository.insertTodo(todo);
     getTodos();

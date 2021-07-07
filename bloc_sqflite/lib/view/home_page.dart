@@ -7,6 +7,7 @@ import 'package:bloc_sqflite/view/serach_delegate.dart';
 import 'package:bloc_sqflite/view/todo_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 class TodoPage extends StatefulWidget {
   const TodoPage({Key? key, required this.title}) : super(key: key);
@@ -19,9 +20,13 @@ class TodoPage extends StatefulWidget {
 class _TodoPageState extends State<TodoPage> {
   final TodoBloc todoBloc = TodoBloc();
   List<Todo> todoList = [];
-  // ignore: prefer_typing_uninitialized_variables
-  var backgroundImg;
+
   Image? imageFromPreferences;
+
+  DateTime? _dateTime;
+  String? pickedDate;
+  String dateBtnText = 'Choose Date';
+  var filters = [true, false];
 
   @override
   void initState() {
@@ -47,9 +52,11 @@ class _TodoPageState extends State<TodoPage> {
                 showSearch(context: context, delegate: Search(todoList));
               },
               icon: const Icon(Icons.search)),
-          const SizedBox(
-            width: 10,
-          ),
+          IconButton(
+              onPressed: () {
+                _showFilterDialogBox();
+              },
+              icon: const Icon(Icons.filter_list)),
           Padding(
               padding: const EdgeInsets.only(right: 5, top: 5, bottom: 5),
               child: CircleAvatar(
@@ -57,12 +64,6 @@ class _TodoPageState extends State<TodoPage> {
                 child: ClipOval(
                   child: (imageFromPreferences != null)
                       ? imageFromPreferences
-                      // Image.(
-                      //     imageFromPreferences,
-                      //     fit: BoxFit.cover,
-                      //     width: 60,
-                      //     height: 60,
-                      //   )
                       : Image.asset(
                           'assets/images/avatar.png',
                           fit: BoxFit.cover,
@@ -288,6 +289,60 @@ class _TodoPageState extends State<TodoPage> {
         });
   }
 
+  Future<void> _showFilterDialogBox() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  GestureDetector(
+                      child: const Text(
+                        'Show Today\'s Task',
+                      ),
+                      onTap: () {
+                        todoBloc.getTodayTodos(
+                            query: DateFormat('yyyy-MM-dd')
+                                .format(DateTime.now()));
+                        _setFiltersState(0);
+                        Navigator.pop(context);
+                      }),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                  ),
+                  GestureDetector(
+                      child: const Text(
+                        'Show All',
+                      ),
+                      onTap: () {
+                        todoBloc.getTodos();
+                        _setFiltersState(1);
+                        Navigator.pop(context);
+                      }),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  void _setFiltersState(int index) {
+    setState(() {
+      for (var element in filters) {
+        if (filters.indexOf(element) != index) {
+          filters[filters.indexOf(element)] = false;
+        } else {
+          filters[filters.indexOf(element)] = true;
+        }
+      }
+    });
+  }
+
+  bool _isFilterActive(int index) {
+    return filters[index] == true ? true : false;
+  }
+
   void _showAddTodoSheet(BuildContext context) {
     final _todoDescriptionController = TextEditingController();
     showModalBottomSheet(
@@ -331,6 +386,11 @@ class _TodoPageState extends State<TodoPage> {
                             ),
                           ),
                           Padding(
+                              padding: const EdgeInsets.only(left: 5, top: 15),
+                              child: ElevatedButton(
+                                  onPressed: DatePicker,
+                                  child: Text(dateBtnText))),
+                          Padding(
                             padding: const EdgeInsets.only(left: 5, top: 15),
                             child: CircleAvatar(
                                 backgroundColor: Colors.indigoAccent,
@@ -343,12 +403,13 @@ class _TodoPageState extends State<TodoPage> {
                                     ),
                                     onPressed: () {
                                       if (_todoDescriptionController
-                                          .value.text.isNotEmpty) {
+                                              .value.text.isNotEmpty &&
+                                          pickedDate!.isNotEmpty) {
                                         final newTodo = Todo(
-                                          description:
-                                              _todoDescriptionController
-                                                  .value.text,
-                                        );
+                                            description:
+                                                _todoDescriptionController
+                                                    .value.text,
+                                            pickedDate: pickedDate!);
                                         if (newTodo.description.isNotEmpty) {
                                           todoBloc.addTodo(newTodo);
                                           Navigator.pop(context);
@@ -357,7 +418,7 @@ class _TodoPageState extends State<TodoPage> {
                                     })),
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -365,6 +426,23 @@ class _TodoPageState extends State<TodoPage> {
             ),
           );
         });
+  }
+
+  // ignore: non_constant_identifier_names
+  void DatePicker() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime.parse("2020-01-01 00:00:01Z"),
+            lastDate: DateTime.parse("2028-01-01 00:00:01Z"))
+        .then((value) {
+      if (value == null) {
+        return;
+      }
+      _dateTime = value;
+      pickedDate = DateFormat('yyyy-MM-dd').format(_dateTime!);
+      dateBtnText = pickedDate!;
+    });
   }
 
   Widget getTodosWidget() {
