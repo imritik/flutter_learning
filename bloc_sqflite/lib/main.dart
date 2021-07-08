@@ -39,18 +39,22 @@ class IntroScreen extends StatelessWidget {
     return SplashScreen(
         useLoader: true,
         loadingText: const Text("Loading..."),
-        navigateAfterSeconds:
-            result != null ? const TodoPage(title: 'My Todo List') : SignUp(),
+        navigateAfterSeconds: result != null
+            ? TodoPage(
+                title: 'My Todo List',
+                uid: result.uid,
+              )
+            : SignUp(),
         seconds: 5,
         title: const Text(
           'Welcome To Meet up!',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
         ),
-        image: Image.asset('assets/images/avatar.png', fit: BoxFit.scaleDown),
+        image: Image.asset('assets/images/flutter_devs.png',
+            fit: BoxFit.scaleDown),
         backgroundColor: Colors.white,
         styleTextUnderTheLoader: const TextStyle(),
         photoSize: 100.0,
-        onClick: () => print("flutter"),
-        loaderColor: Colors.red);
+        loaderColor: Colors.indigo);
   }
 }

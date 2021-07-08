@@ -5,8 +5,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class NavigateDrawer extends StatefulWidget {
-  final String? uid;
-  NavigateDrawer({Key? key, this.uid}) : super(key: key);
+  final String uid;
+  const NavigateDrawer({Key? key, required this.uid}) : super(key: key);
   @override
   _NavigateDrawerState createState() => _NavigateDrawerState();
 }
@@ -19,12 +19,12 @@ class _NavigateDrawerState extends State<NavigateDrawer> {
         padding: const EdgeInsets.all(0),
         children: <Widget>[
           UserAccountsDrawerHeader(
-            accountName: null,
+            accountName: const Text("Dummy Name"),
             accountEmail: FutureBuilder(
               future: FirebaseDatabase.instance
                   .reference()
                   .child("Users")
-                  .child(widget.uid!)
+                  .child(widget.uid)
                   .once(),
               builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
                 if (snapshot.hasData) {
@@ -38,7 +38,7 @@ class _NavigateDrawerState extends State<NavigateDrawer> {
           ),
           ListTile(
             leading:
-                IconButton(onPressed: () => null, icon: const Icon(Icons.home)),
+                IconButton(onPressed: () => {}, icon: const Icon(Icons.home)),
             title: const Text("Home"),
             onTap: () {
               Navigator.push(
@@ -51,8 +51,8 @@ class _NavigateDrawerState extends State<NavigateDrawer> {
             },
           ),
           ListTile(
-            leading: IconButton(
-                onPressed: () => null, icon: const Icon(Icons.logout)),
+            leading:
+                IconButton(onPressed: () => {}, icon: const Icon(Icons.logout)),
             title: const Text("Logout"),
             onTap: () {
               FirebaseAuth auth = FirebaseAuth.instance;

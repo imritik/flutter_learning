@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
+// ignore: use_key_in_widget_constructors
 class EmailSignUp extends StatefulWidget {
   @override
   _EmailSignUpState createState() => _EmailSignUpState();
@@ -105,7 +106,7 @@ class _EmailSignUpState extends State<EmailSignUp> {
         .then((value) {
       dbRef.child(value.user!.uid).set({
         "email": emailController.text,
-        "password": passwordController.text
+        // "password": passwordController.text
       }).then((res) {
         isLoading = false;
         Navigator.pushReplacement(
@@ -127,6 +128,7 @@ class _EmailSignUpState extends State<EmailSignUp> {
                 TextButton(
                   child: const Text("Ok"),
                   onPressed: () {
+                    isLoading = false;
                     Navigator.of(context).pop();
                   },
                 )

@@ -3,13 +3,14 @@ import 'package:bloc_sqflite/view/auth/email_signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
+// ignore: use_key_in_widget_constructors
 class SignUp extends StatelessWidget {
   final String title = "Sign Up";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(this.title),
+          title: Text(title),
         ),
         body: Center(
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <

@@ -9,13 +9,14 @@ import 'package:bloc_sqflite/view/todo_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_database/firebase_database.dart';
 
 class TodoPage extends StatefulWidget {
-  const TodoPage({Key? key, required this.title, this.uid}) : super(key: key);
+  const TodoPage({Key? key, required this.title, required this.uid})
+      : super(key: key);
   final String title;
-  final String? uid;
+  final String uid;
 
   @override
   _TodoPageState createState() => _TodoPageState();
@@ -344,9 +345,9 @@ class _TodoPageState extends State<TodoPage> {
     });
   }
 
-  bool _isFilterActive(int index) {
-    return filters[index] == true ? true : false;
-  }
+  // bool _isFilterActive(int index) {
+  //   return filters[index] == true ? true : false;
+  // }
 
   void _showAddTodoSheet(BuildContext context) {
     final _todoDescriptionController = TextEditingController();

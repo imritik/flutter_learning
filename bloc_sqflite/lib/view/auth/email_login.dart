@@ -2,6 +2,7 @@ import 'package:bloc_sqflite/view/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+// ignore: use_key_in_widget_constructors
 class EmailLogIn extends StatefulWidget {
   @override
   _EmailLogInState createState() => _EmailLogInState();
@@ -97,7 +98,6 @@ class _EmailLogInState extends State<EmailLogIn> {
                     uid: value.user!.uid,
                   )));
     }).catchError((err) {
-      print(err.message);
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -107,6 +107,7 @@ class _EmailLogInState extends State<EmailLogIn> {
               actions: [
                 ElevatedButton(
                     onPressed: () {
+                      isLoading = false;
                       Navigator.of(context).pop();
                     },
                     child: const Text("Ok"))

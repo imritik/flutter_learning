@@ -2,6 +2,7 @@ import 'package:bloc_sqflite/models/todo.dart';
 import 'package:flutter/material.dart';
 import 'package:bloc_sqflite/helper/helper_widget.dart' as helper;
 
+// ignore: must_be_immutable
 class TodoListScreen extends StatelessWidget {
   final DismissDirection _dismissDirection = DismissDirection.horizontal;
 
