@@ -34,6 +34,12 @@ This project is a starting point for a Flutter application.
 
 14-SharedPreferences (Image upload)
 
+15- Firebase Auth (Email login)
+
+16-Splash Screen
+
+17-Automatic login if state exist
+
 
 
 

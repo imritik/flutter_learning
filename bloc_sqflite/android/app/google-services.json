@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "684622453555",
+    "project_id": "bloc-sqflite",
+    "storage_bucket": "bloc-sqflite.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684622453555:android:ef0fb2482c196d3f04fc46",
+        "android_client_info": {
+          "package_name": "com.example.bloc_sqflite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "684622453555-2doc53ckls58svgid0f2o7ei2au3df5q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMBoqI_gqjri0CtNpqKFLKmEtWo-_93hc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "684622453555-2doc53ckls58svgid0f2o7ei2au3df5q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

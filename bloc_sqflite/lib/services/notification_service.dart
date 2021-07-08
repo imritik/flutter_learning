@@ -28,8 +28,8 @@ class NotificationService {
         onSelectNotification: onSelectNotification);
   }
 
-  Future onSelectNotification(String payload) async {
-    Get.to(NewScreen(payload: payload));
+  Future onSelectNotification(String? payload) async {
+    Get.to(NewScreen(payload: payload!));
   }
 
   void showNotificationMediaStyle() async {

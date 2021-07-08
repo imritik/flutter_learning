@@ -3,15 +3,19 @@ import 'package:bloc_sqflite/helper/camera_options.dart' as camera_helper;
 import 'package:bloc_sqflite/helper/helper_widget.dart' as helper;
 import 'package:bloc_sqflite/models/todo.dart';
 import 'package:bloc_sqflite/services/shared_preferences_service.dart';
+import 'package:bloc_sqflite/view/drawer_view.dart';
 import 'package:bloc_sqflite/view/serach_delegate.dart';
 import 'package:bloc_sqflite/view/todo_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class TodoPage extends StatefulWidget {
-  const TodoPage({Key? key, required this.title}) : super(key: key);
+  const TodoPage({Key? key, required this.title, this.uid}) : super(key: key);
   final String title;
+  final String? uid;
 
   @override
   _TodoPageState createState() => _TodoPageState();
@@ -163,6 +167,7 @@ class _TodoPageState extends State<TodoPage> {
           ),
         ),
       ),
+      drawer: NavigateDrawer(uid: widget.uid),
       bottomNavigationBar: BottomAppBar(
         color: Colors.white,
         child: Container(
