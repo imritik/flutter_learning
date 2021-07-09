@@ -1,5 +1,5 @@
 import 'package:bloc_sqflite/view/auth/signup.dart';
-import 'package:bloc_sqflite/view/home_page.dart';
+import 'package:bloc_sqflite/view/todos/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';

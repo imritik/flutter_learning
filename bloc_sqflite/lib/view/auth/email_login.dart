@@ -1,4 +1,5 @@
-import 'package:bloc_sqflite/view/home_page.dart';
+import 'package:bloc_sqflite/helper/helper_widget.dart' as helper;
+import 'package:bloc_sqflite/view/todos/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,7 @@ class _EmailLogInState extends State<EmailLogIn> {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(12.0),
                 child: TextFormField(
                   controller: emailController,
                   decoration: InputDecoration(
@@ -46,7 +47,7 @@ class _EmailLogInState extends State<EmailLogIn> {
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(12.0),
                   child: TextFormField(
                     obscureText: true,
                     controller: passwordController,
@@ -64,7 +65,7 @@ class _EmailLogInState extends State<EmailLogIn> {
                     },
                   )),
               Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(12.0),
                   child: isLoading
                       ? const CircularProgressIndicator()
                       : ElevatedButton(
@@ -98,22 +99,8 @@ class _EmailLogInState extends State<EmailLogIn> {
                     uid: value.user!.uid,
                   )));
     }).catchError((err) {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text("Error"),
-              content: Text(err.message),
-              actions: [
-                ElevatedButton(
-                    onPressed: () {
-                      isLoading = false;
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text("Ok"))
-              ],
-            );
-          });
+      isLoading = false;
+      helper.showErrorAlert(context, err);
     });
   }
 

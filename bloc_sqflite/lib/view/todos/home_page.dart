@@ -3,9 +3,10 @@ import 'package:bloc_sqflite/helper/camera_options.dart' as camera_helper;
 import 'package:bloc_sqflite/helper/helper_widget.dart' as helper;
 import 'package:bloc_sqflite/models/todo.dart';
 import 'package:bloc_sqflite/services/shared_preferences_service.dart';
-import 'package:bloc_sqflite/view/drawer_view.dart';
-import 'package:bloc_sqflite/view/serach_delegate.dart';
-import 'package:bloc_sqflite/view/todo_list_view.dart';
+import 'package:bloc_sqflite/view/todos/drawer_view.dart';
+import 'package:bloc_sqflite/view/todos/serach_delegate.dart';
+import 'package:bloc_sqflite/view/todos/todo_list_view.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';

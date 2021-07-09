@@ -110,3 +110,23 @@ Future<void> shareFiles() async {
   Share.shareFiles(imagesPath,
       text: 'Sharing images', subject: 'Sharing through email');
 }
+
+void showErrorAlert(BuildContext context, dynamic err) {
+  showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Error"),
+          content: Text(err.message),
+          actions: [
+            TextButton(
+              child: const Text("Ok"),
+              onPressed: () {
+                // isLoading = false;
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      });
+}

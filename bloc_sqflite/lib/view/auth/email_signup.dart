@@ -1,4 +1,5 @@
-import 'package:bloc_sqflite/view/home_page.dart';
+import 'package:bloc_sqflite/helper/helper_widget.dart' as helper;
+import 'package:bloc_sqflite/view/todos/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class _EmailSignUpState extends State<EmailSignUp> {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(12.0),
                 child: TextFormField(
                   controller: emailController,
                   decoration: InputDecoration(
@@ -52,7 +53,7 @@ class _EmailSignUpState extends State<EmailSignUp> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(12.0),
                 child: TextFormField(
                   obscureText: true,
                   controller: passwordController,
@@ -74,13 +75,10 @@ class _EmailSignUpState extends State<EmailSignUp> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(12.0),
                 child: isLoading
                     ? const CircularProgressIndicator()
                     : ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Colors.lightBlue)),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             setState(() {
@@ -106,7 +104,6 @@ class _EmailSignUpState extends State<EmailSignUp> {
         .then((value) {
       dbRef.child(value.user!.uid).set({
         "email": emailController.text,
-        // "password": passwordController.text
       }).then((res) {
         isLoading = false;
         Navigator.pushReplacement(
@@ -118,23 +115,8 @@ class _EmailSignUpState extends State<EmailSignUp> {
                     )));
       });
     }).catchError((err) {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text("Error"),
-              content: Text(err.message),
-              actions: [
-                TextButton(
-                  child: const Text("Ok"),
-                  onPressed: () {
-                    isLoading = false;
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            );
-          });
+      isLoading = false;
+      helper.showErrorAlert(context, err);
     });
   }
 

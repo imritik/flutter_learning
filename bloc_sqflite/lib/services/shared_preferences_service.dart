@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesService {
+  // ignore: constant_identifier_names
   static const String KEY = 'IMAGE_KEY';
 
   static Future<String?> getImageFromPreferences() async {
