@@ -32,7 +32,7 @@ class _EmailSignUpState extends State<EmailSignUp> {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(12.0),
+                padding: const EdgeInsets.all(20.0),
                 child: TextFormField(
                   controller: emailController,
                   decoration: InputDecoration(

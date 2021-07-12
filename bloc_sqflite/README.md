@@ -42,6 +42,12 @@ This project is a starting point for a Flutter application.
 
 18-Firebase real-time database
 
+19-Google signIn (in process)
+
+20-Proguard
+
+
+The Stream is like a pipe. When you enter a value from one side and a listener from the other side, the listener will get that value. A stream can have multiple listeners and all those listeners can get the pipeline.puting in all will get equal value. The way you put values on the stream is by using the Stream Controller. A stream builder is a widget that can convert user-defined objects into a stream.
 
 
 
